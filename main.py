@@ -50,7 +50,7 @@ def spy(ctx) -> Union(str, str): #this function is not necessary for the bot to 
     users = [lines.strip() for lines in open(USERS)] #reads the file so that we don't have copys of users
     for line in users: #searches in all of lines from the csv
         for column in line.split(','): #searches in all rows from the line
-        #another way of doing this is `if line.split(',')[0] == str(id):`
+        #another way of doing this is `if line.split(',')[0] == str(id):` would substitute both the line up and the line down
             if str(id) == column: #the user id is unique so we just verify if it's already in the csv
                 return mention, locale
     else:
@@ -160,7 +160,7 @@ async def unsubscribe(ctx, act: str) -> None: #reverse from subscribe ;)
     except FileNotFoundError:
         await ctx.send(f'{act} does not exist')
 
-if __name__ == '__main__':
+if __name__ == '__main__': #the bot only runs if this is the file being run, makes it cannot be run through imports
 
     os.system('cls||clear') #clear the console for easier visualization
 
