@@ -1,7 +1,7 @@
 from os import stat
 from discord.ext import commands
 from .core import Core
-from main import VERSION, spy, status, scheduler, FOOTER
+from main import VERSION, spy, status, scheduler, FOOTER, BOT
 from apscheduler.triggers.cron import CronTrigger
 from discord.utils import get
 
@@ -21,34 +21,16 @@ class General(Core):
 
     @commands.command()
     async def bot(self, ctx):
-        """Informação rápida sobre o bot"""
+        """Short info about the bot"""
         spy(ctx)
         thumbnail = self.client.user.avatar_url
         embed = await self.embed(
-            title='NÉD Bot',
-            description=f'Versão personalizada pro servidor da NÉD do bot (ainda não sei o nome kk)\n`Ver. {VERSION}`',
-            footer='by Digão', thumbnail=thumbnail
+            title=BOT,
+            description=f'Hi I am Achilles\n`Ver. {VERSION}`',
+            footer=FOOTER, thumbnail=thumbnail
             )
         await ctx.send(embed=embed)
         status()
-
-    @commands.command()
-    async def server(self, ctx):
-        """Mostra informações sobre o servidor."""
-        spy(ctx)
-        name = str(ctx.guild.name)
-        description = 'str(ctx.guild.description)'
-        member_count = str(ctx.guild.member_count)
-        icon = str(ctx.guild.icon_url)
-        deus = await self.set_field('Deus dos Deuses', '<@688942919347863553>')
-        mandato = await self.set_field('Mandato Atual', '<@268522466656124938>')
-        representante = await self.set_field('Representante', '<@335679355646640139>')
-        broxa = await self.set_field('Maior Broxa de Todos', '<@313175099047936003>')
-        seguidores = await self.set_field('Seguidores do Culto', member_count)
-        fields = [deus, mandato, representante, broxa, seguidores]
-        embed = await self.embed(title=name, description=description, thumbnail=icon, fields=fields)
-        await ctx.send(embed=embed)
-        status('Informando sobre o server...')
 
     async def command_help(self, ctx, command):
         help = [await self.set_field(name='Command description', value=command.help)]
@@ -73,7 +55,7 @@ class General(Core):
         await ctx.send(embed=embed)
         status('Helping...')
 
-    @commands.command(name='help', aliases=['ajuda'])
+    @commands.command(name='help')
     async def show_help(self, ctx, command: str = None):
         """Shows this message."""
         spy(ctx)
@@ -85,15 +67,9 @@ class General(Core):
             else:
                 await ctx.send('That command does not exist.')
 
-    async def not_broxa(self, message='Lembrando que <@313175099047936003> é broxa', act='broxa'):
-        status(message)
-        await self.notifier(message, act)
-
     @commands.Cog.listener()
     async def on_ready(self):
-        scheduler.add_job(self.not_broxa, CronTrigger(hour=20,minute=30,second=0))
-        scheduler.start()
-        status('General schedulers started')
+        status('General started')
 
 def setup(client):
     client.add_cog(General(client))
