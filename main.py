@@ -12,45 +12,47 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from random import choice
 
 #Constants
-BOT = 'Achilles' #Bot's name
-BOTDIR = os.path.dirname(__file__) #Bot's directory
-INFO = os.path.join(BOTDIR, 'infos') #save the infos folder
-TOKEN = open(f'{INFO}/botinfo.txt').readlines()[0] #gets the bot token in the botinfo file
-PREFIXES = open(f'{INFO}/botinfo.txt').readlines()[1].strip().split(',') #gets the prefixes
-COGS = os.path.join(BOTDIR, 'cogs') #cogs folder
-IMAGES = os.path.join(BOTDIR, 'images') #images folder
-ICON = os.path.join(BOTDIR, 'images/achilles.jpg') #bot default icon
-SUBBED = os.path.join(INFO, 'subbed.csv') #template for saved subbed channels
-USERS = os.path.join(INFO, 'users.csv') #template for infos saved from users
-TEXTS = os.path.join(BOTDIR, 'texts') #folder with plain texts
-ACTIVITIES = os.path.join(INFO, 'activities.txt') #template for activities
-VERSION = '0.1.0' #bot version
-FOOTER = 'Achilles Bot' #footer for embed
-AUDIO = os.path.join(BOTDIR, 'audio') #audios folder
-SAMPLE = os.path.join(AUDIO, 'sample') #shortes audios folder
+BOT = 'Achilles'
+VERSION = '0.1.0'
+    #paths
+BOTDIR = os.path.dirname(__file__)
+INFO = os.path.join(BOTDIR, 'infos') 
+TOKEN = open(f'{INFO}/botinfo.txt').readlines()[0]
+PREFIXES = open(f'{INFO}/botinfo.txt').readlines()[1].strip().split(',') 
+COGS = os.path.join(BOTDIR, 'cogs')
+IMAGES = os.path.join(BOTDIR, 'images')
+SUBBED = os.path.join(INFO, 'subbed.csv')
+USERS = os.path.join(INFO, 'users.csv')
+TEXTS = os.path.join(BOTDIR, 'texts')
+ACTIVITIES = os.path.join(INFO, 'activities.txt')
+AUDIO = os.path.join(BOTDIR, 'audio')
+SAMPLE = os.path.join(AUDIO, 'sample')
 
 client = commands.Bot(command_prefix=PREFIXES) #calls the bot object, the most important thing to make the bot work
 scheduler = AsyncIOScheduler() #scheduler for automated tasks
 
-def status(message: str = 'Probably forgot the status...') -> print: #this function is not necessary for the bot to work
+def status(message: str = 'Probably forgot the status...') -> print:
     """Changes the console status
     """
-    print(f'{message} {localtime()[3]}:{localtime()[4]}:{localtime()[5]}') #prints a defined message and the time like hour:mins:secs
-    print('\nAwaiting command...') #prints thats it's ready for other command
+    print(f'{message} {localtime()[3]}:{localtime()[4]}:{localtime()[5]}') #hour:mins:secs
+    print('\nAwaiting command...')
 
-def spy(ctx) -> Union(str, str): #this function is not necessary for the bot to work
-    """Save information from new users of the bot and returns their mention code and locale
+def spy(ctx) -> Union[str, str]:
+    """Saves info from new users and returns their mention code and locale
     """
-    id = ctx.author.id #gets the id from the person that used the command
-    name = ctx.author.name #gets the name from the person that used the command
-    mention = ctx.author.mention #gets the mention code from the person that used the command
-    data = [str(id), str(name), str(mention)] #prepares the info above to be saved in a csv file
-    data = ','.join(data) #make it into a string
-    locale = ctx.guild.preferred_locale #gets the preferred locale of the guild
+    id = ctx.author.id
+    name = ctx.author.name
+    mention = ctx.author.mention
+    data = [str(id), str(name), str(mention)]
+    data = ','.join(data)
+    locale = ctx.guild.preferred_locale
     users = [lines.strip() for lines in open(USERS)] #reads the file so that we don't have copys of users
-    for line in users: #searches in all of lines from the csv
-        for column in line.split(','): #searches in all rows from the line
-        #another way of doing this is `if line.split(',')[0] == str(id):` would substitute both the line up and the line down
+    for line in users: 
+        #searches in all of lines from the csv
+        #then searches in all rows from the line
+        #if the id has a match it means that the user is already stored
+        for column in line.split(','):
+        #another way of doing this is `if line.split(',')[0] == str(id):`
             if str(id) == column: #the user id is unique so we just verify if it's already in the csv
                 return mention, locale
     else:
