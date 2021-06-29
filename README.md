@@ -22,3 +22,13 @@ BOT TOKEN HERE
 ---
 ## If you are reading this now
 Hello! As of this release this isn't a lot in yet, it does work tough! There still a lot of things to implement and more to explain. Soon enough this README will show you how to create the bot in the Discord site and how to get the TOKEN to run the bot, for now I'm sorry for being incomplete, but I hope it helps someway.
+
+---
+## To Do ✓
+* [ ] Explain how to change activity
+* [x] Clear the comment mess
+* [ ] Doc everything
+* [ ] Snippets
+* [ ] Explain how to create a Discord bot
+* [ ] Add more templates, like audio
+* [ ] Remember more things to do
