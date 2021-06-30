@@ -13,8 +13,8 @@ from random import choice
 
 #Constants
 BOT = 'Achilles'
-VERSION = '0.1.0'
-    #Paths
+VERSION = '0.1.1'
+#Paths
 BOTDIR = os.path.dirname(__file__)
 INFO = os.path.join(BOTDIR, 'infos') 
 TOKEN = open(f'{INFO}/botinfo.txt').readlines()[0]
@@ -27,18 +27,18 @@ TEXTS = os.path.join(BOTDIR, 'texts')
 ACTIVITIES = os.path.join(INFO, 'activities.txt')
 AUDIO = os.path.join(BOTDIR, 'audio')
 SAMPLE = os.path.join(AUDIO, 'sample')
-
+#Objects
 client = commands.Bot(command_prefix=PREFIXES) #Calls the bot object, the most important thing to make the bot work.
 scheduler = AsyncIOScheduler() #Scheduler for automated tasks.
 
 def status(message: str = 'Probably forgot the status...') -> print:
-    """Changes the console status
+    """Changes the console status.
     """
     print(f'{message} {localtime()[3]}:{localtime()[4]}:{localtime()[5]}') #hours:mins:secs
     print('\nAwaiting command...')
 
 def spy(ctx) -> Union[str, str]:
-    """Saves info from new users and returns their mention code and locale
+    """Saves info from new users and returns their mention code and locale.
     """
     id = ctx.author.id
     name = ctx.author.name
@@ -59,7 +59,7 @@ def spy(ctx) -> Union[str, str]:
         return mention, locale
 
 async def activity_changer() -> None: #This is the "status" under the bot name.
-    """Changes the bot activity
+    """Changes the bot activity.
     """ 
     name = choice(open(ACTIVITIES, 'r', encoding='UTF-8').readlines()) #Randomly chooses one of the activities in the activities file.
     activity = discord.Activity(name=name, type=discord.ActivityType.watching) #Transforms it into the discord class.
@@ -67,7 +67,7 @@ async def activity_changer() -> None: #This is the "status" under the bot name.
 
 @client.event #Decorator that gives a flag on event.
 async def on_ready() -> None: #When the bot is ready for using.
-    """Notifies when it's ready and turn on schedulers"""
+    """Notifies when it's ready and turn on schedulers."""
     status(f'\n{client.user.name} is on')
     await activity_changer()
     scheduler.add_job(activity_changer, CronTrigger(minute=30, second=0)) #Creates a scheduled task, this one changes activity every 30 mins.
@@ -77,7 +77,7 @@ async def on_ready() -> None: #When the bot is ready for using.
 @client.command(hidden=True) #This is a Discord command, won't show on the help command.
 @commands.has_permissions(administrator=True) #Checks if the user that called it has the permission administrator.
 async def reload(ctx, extension) -> None:
-    """Reloads a cog"""
+    """Reloads a cog."""
     spy(ctx)
     client.reload_extension(f'cogs.{extension}')
     status(f'Reloading {extension}...')
@@ -86,7 +86,7 @@ async def reload(ctx, extension) -> None:
 @client.command(hidden=True)
 @commands.has_permissions(administrator=True)
 async def load(ctx, extension) -> None:
-    """Loads an unloaded cog"""
+    """Loads an unloaded cog."""
     spy(ctx)
     client.load_extension(f'cogs.{extension}')
     status(f'Loading {extension}...')
@@ -95,7 +95,7 @@ async def load(ctx, extension) -> None:
 @client.command(hidden=True)
 @commands.has_permissions(administrator=True)
 async def unload(ctx, extension) -> None:
-    """Unloads a loaded cog"""
+    """Unloads a loaded cog."""
     spy(ctx)
     client.unload_extension(f'cogs.{extension}')
     status(f'Unloading {extension}...')
@@ -104,7 +104,9 @@ async def unload(ctx, extension) -> None:
 @client.command(aliases=['clear'])
 @commands.has_permissions(manage_messages=True) #Bot needs this server permission, I don't recommend removing this check.
 async def purge(ctx, amt=100) -> None:
-    """Clears channel of an amount (default 100) of messages, needs manage messages permission"""
+    """Clears channel of an amount (default 100) of messages,
+    needs `manage messages` permission.
+    """
     spy(ctx)
     await ctx.channel.purge(limit = amt + 1) #limit is the amount of messages the bot will clear + 1 for the command.
     await ctx.send(f'The last {amt} messages were purged')
@@ -113,7 +115,7 @@ async def purge(ctx, amt=100) -> None:
 @client.command()
 @commands.has_permissions(administrator=True)
 async def subscribe(ctx, act: str) -> None:
-    """Subscribes the channel to notifications, needs admin permission"""
+    """Subscribes the channel to notifications, needs admin permission."""
     spy(ctx)
     id = str(ctx.channel.id)
     name = str(ctx.channel.name)
@@ -142,7 +144,7 @@ async def subscribe(ctx, act: str) -> None:
 @client.command()
 @commands.has_permissions(administrator=True)
 async def unsubscribe(ctx, act: str) -> None:
-    """Unsubs the channel from notifications, needs admin permission"""
+    """Unsubs the channel from notifications, needs admin permission."""
     spy(ctx)
     id = str(ctx.channel.id)
     try:
@@ -174,7 +176,7 @@ if __name__ == '__main__': #Makes it can't be run through imports.
         #then checks if it ends with py, if it does loads it
         #if the file starts with # or is the core module it's no implemented.
         if file.endswith('.py'):
-            if file.startswith('core') or file.startswith('#'): # # was arbritary
+            if file.startswith('core') or file.startswith('#'): # # was arbritary it can be anything else or even nothing.
                 continue
             else:
                 client.load_extension(f'cogs.{file[:-3]}')
