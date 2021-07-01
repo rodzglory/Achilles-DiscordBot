@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Union
 import weakref
 import discord
 import requests
@@ -7,7 +7,7 @@ import json
 
 from discord.embeds import Embed
 from discord.ext import commands
-from main import spy, status, INFO, client, scheduler
+from main import status, INFO, client, scheduler, USERS
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from time import sleep
@@ -17,6 +17,27 @@ class Core(commands.Cog):
 
     def __init__(self, client) -> None:
         self.client = client
+
+    def spy(ctx) -> Union[str, str]:
+        """Saves info from new users and returns their mention code and locale.
+        """
+        id = ctx.author.id
+        name = ctx.author.name
+        mention = ctx.author.mention
+        data = [str(id), str(name), str(mention)]
+        data = ','.join(data)
+        locale = ctx.guild.preferred_locale
+        users = [lines.strip() for lines in open(USERS)] #Reads the file so that we don't have copys of users.
+        for line in users: 
+            #Searches in all of lines from the csv
+            #then looks at the first info on the line that is the id
+            #if the unique id has a match it means the user is already stored.
+            if line.split(',')[0] == str(id):
+                return mention, locale
+        else:
+            open(USERS, 'a').write(f'{data}\n') #If the id is new we save it.
+            status('New user registered')
+            return mention, locale
 
     @staticmethod
     async def embed(*, 
@@ -57,7 +78,7 @@ class Core(commands.Cog):
 
     async def sound(self, ctx, path: str):
         """Plays a sound."""
-        spy(ctx)
+        self.spy(ctx)
         voice = ctx.voice_client
         if voice.is_playing():
             return await ctx.send('I\'m already playing something')
