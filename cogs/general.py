@@ -1,8 +1,7 @@
 from os import stat
 from discord.ext import commands
 from .core import Core
-from main import VERSION, spy, status, scheduler, BOT, INFO
-from apscheduler.triggers.cron import CronTrigger
+from main import VERSION, status, scheduler, BOT, INFO
 from discord.utils import get
 
 FOOTER = 'Powered by Achilles Bot'
@@ -28,7 +27,7 @@ class General(Core):
     @commands.command()
     async def bot(self, ctx):
         """Short info about the bot."""
-        spy(ctx)
+        self.spy(ctx)
         thumbnail = self.client.user.avatar_url
         embed = await self.embed(
             title=BOT,
@@ -66,7 +65,7 @@ class General(Core):
     @commands.command(name='help')
     async def show_help(self, ctx, command: str = None):
         """Shows this message."""
-        spy(ctx)
+        self.spy(ctx)
         if command is None:
             await self.general_help(ctx)
         else:
@@ -91,7 +90,7 @@ class General(Core):
     @commands.has_permissions(administrator=True)
     async def subscribe(self, ctx, act: str) -> None:
         """Subscribes the channel to notifications, needs admin permission."""
-        spy(ctx)
+        self.spy(ctx)
         id = str(ctx.channel.id)
         name = str(ctx.channel.name)
         guild = str(ctx.channel.guild)
@@ -120,7 +119,7 @@ class General(Core):
     @commands.has_permissions(administrator=True)
     async def unsubscribe(self, ctx, act: str) -> None:
         """Unsubs the channel from notifications, needs admin permission."""
-        spy(ctx)
+        self.spy(ctx)
         id = str(ctx.channel.id)
         try:
             file = open(f'{INFO}/{act}.csv', 'r')
@@ -141,7 +140,7 @@ class General(Core):
         """Clears channel of an amount (default 100) of messages,
         needs `manage messages` permission.
         """
-        spy(ctx)
+        self.spy(ctx)
         await ctx.channel.purge(limit = amt + 1) #limit is the amount of messages the bot will clear + 1 for the command.
         await ctx.send(f'The last {amt} messages were purged')
         status(f'Purging {amt}...')
@@ -150,7 +149,7 @@ class General(Core):
     @commands.has_permissions(administrator=True) #Checks if the user that called it has the permission administrator.
     async def reload(self, ctx, extension) -> None:
         """Reloads a cog."""
-        spy(ctx)
+        self.spy(ctx)
         self.client.reload_extension(f'cogs.{extension}')
         status(f'Reloading {extension}...')
         await ctx.send(f'{extension} reloaded') #Bot sends a message to the same text channel it was called.
@@ -159,7 +158,7 @@ class General(Core):
     @commands.has_permissions(administrator=True)
     async def load(self, ctx, extension) -> None:
         """Loads an unloaded cog."""
-        spy(ctx)
+        self.spy(ctx)
         self.client.load_extension(f'cogs.{extension}')
         status(f'Loading {extension}...')
         await ctx.send(f'{extension} loaded')
@@ -168,7 +167,7 @@ class General(Core):
     @commands.has_permissions(administrator=True)
     async def unload(self, ctx, extension) -> None:
         """Unloads a loaded cog."""
-        spy(ctx)
+        self.spy(ctx)
         self.client.unload_extension(f'cogs.{extension}')
         status(f'Unloading {extension}...')
         await ctx.send(f'{extension} unloaded')

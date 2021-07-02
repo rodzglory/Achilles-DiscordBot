@@ -6,16 +6,13 @@ import json
 from discord.embeds import Embed
 from discord.ext import commands
 from main import status, INFO, client, scheduler, USERS
-from apscheduler.triggers.cron import CronTrigger
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from time import sleep
-from functools import wraps
 
 class Core(commands.Cog):
 
     def __init__(self, client) -> None:
         self.client = client
 
+    @staticmethod
     def spy(ctx) -> Union[str, str]:
         """Saves info from new users and returns their mention code and locale.
         """
@@ -62,7 +59,8 @@ class Core(commands.Cog):
         """Sets a tuple that contains the values needed for a field of the embed."""
         return (name, value, inline)
 
-    async def notifier(self, message: str, act: str) -> None:
+    @staticmethod
+    async def notifier(message: str, act: str) -> None:
         """Sends a message for all subscribed channels."""
         subs = [lines.strip() for lines in open(f'{INFO}/{act}.csv')]
         for line in subs[1:]:
@@ -70,7 +68,7 @@ class Core(commands.Cog):
                 continue
             else:
                 line = line.split(',')
-                channel = self.client.get_channel(int(line[0]))
+                channel = client.get_channel(int(line[0]))
                 await channel.send(message)
                 status('Notifying...')
 

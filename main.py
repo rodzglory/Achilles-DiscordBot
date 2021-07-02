@@ -1,10 +1,6 @@
 #Modules
 import os
-from typing import Union
 import discord
-from discord import activity
-from discord import channel
-from discord import message
 from discord.ext import commands
 from time import sleep, localtime
 from apscheduler.triggers.cron import CronTrigger
