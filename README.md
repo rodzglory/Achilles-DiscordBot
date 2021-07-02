@@ -4,32 +4,39 @@
 ## <b>About</b>
  A Discord bot that intends to help others create and customize their own bot. Previous programming languages knowledge, especially Python, is required to fully understand the bot programming, altough I really try to explain everything. The bot is under the MIT License, so feel free to fork it or make your own bot using this as basis!
 ### <b>Personality</b>
-Achilles is named after the character from [Supergiant Games](https://www.supergiantgames.com) awesome game [Hades](https://www.supergiantgames.com/games/hades). He's the mentor of Zagreus and as this bot is meant to teach people or at least serve as a basis to other bots, so it felt pretty fit to the personality!
+<i><b>Achilles</b> is named after the character from [<b>Supergiant Games</b>](https://www.supergiantgames.com) awesome game [<b>Hades</b>](https://www.supergiantgames.com/games/hades). He's the <b>mentor</b> of Zagreus and as this bot is meant to <b>teach</b> people or at least serve as a template to other bots, so it felt pretty fit to the personality!</i>
 
 ---
 ## <b>Dependencies</b>
 To use this bot we first need to install some dependencies. If you are on Windows just open command prompt or PowerShell and type the command.
 
-First install, the most important one, [discord.py](https://discordpy.readthedocs.io/en/stable/):
-```
+First install [discord.py](https://discordpy.readthedocs.io/en/stable/) :
+```cmd
 pip install discord
 ```
 
-
+For scheduled tasks we are using [apscheduler](https://apscheduler.readthedocs.io/en/stable/) :
+```cmd
+pip install apscheduler
+```
 
 ---
-## How to use
-The bot functions by running the main.py file, but first you have to setup two informations in the botinfo.txt under the infos folder.
-### Token
+## <b>How to use</b>
+The bot <b>functions by just running the <i>main.py</i> file</b>, but first you have to setup two infos in the <i>botinfo.txt</i> under the infos folder.
+
+### <b>Token</b>
 You just need to put the bot's token in the first line!
-### Prefixes
+
+### <b>Prefixes</b>
 You need to choose wich prefixes will be available for the commands to be called, you need at least one, if using more separate then by commas and no spaces.
+
 ### The botinfo file should be as
-```
+```txt
 BOT TOKEN HERE
 +,>,$
 ```
+As soon these are filled <b>just run the bot!</b>
 
 ---
-## If you are reading this now
+## If you are reading this ...
 Hello! As of this release this isn't a lot in yet, it does work tough! There still a lot of things to implement and more to explain. Soon enough this README will show you how to create the bot in the Discord site and how to get the TOKEN to run the bot, for now I'm sorry for being incomplete, but I hope it helps someway.
