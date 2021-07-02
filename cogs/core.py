@@ -1,10 +1,8 @@
-import os
+#Modules
 from typing import Any, Union
-import weakref
 import discord
 import requests
 import json
-
 from discord.embeds import Embed
 from discord.ext import commands
 from main import status, INFO, client, scheduler, USERS
