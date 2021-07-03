@@ -6,10 +6,12 @@ from time import sleep, localtime
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from random import choice
+from tqdm import tqdm
+from termcolor import cprint
 
 #Constants
 BOT = 'Achilles'
-VERSION = '0.1.1'
+VERSION = '0.1.3'
 #Paths
 BOTDIR = os.path.dirname(__file__)
 INFO = os.path.join(BOTDIR, 'infos') 
@@ -30,8 +32,9 @@ scheduler = AsyncIOScheduler() #Scheduler for automated tasks.
 def status(message: str = 'Probably forgot the status...') -> print:
     """Changes the console status.
     """
-    print(f'{message} {localtime()[3]}:{localtime()[4]}:{localtime()[5]}') #hours:mins:secs
-    print('\nAwaiting command...')
+    cprint(f'{message}', color='green')
+    cprint(f'{localtime()[3]}:{localtime()[4]}:{localtime()[5]}', color='yellow') #hours:mins:secs
+    cprint('\nAwaiting command...', color='cyan')
 
 async def activity_changer() -> None: #This is the "status" under the bot name.
     """Changes the bot activity.
@@ -39,6 +42,7 @@ async def activity_changer() -> None: #This is the "status" under the bot name.
     name = choice(open(ACTIVITIES, 'r', encoding='UTF-8').readlines()) #Randomly chooses one of the activities in the activities file.
     activity = discord.Activity(name=name, type=discord.ActivityType.watching) #Transforms it into the discord class.
     await client.change_presence(activity=activity)
+    status('Changing activity...')
 
 @client.event #Decorator that gives a flag on event.
 async def on_ready() -> None: #When the bot is ready for using.
@@ -60,7 +64,7 @@ if __name__ == '__main__': #Makes it can't be run through imports.
 
     os.system('cls||clear')
 
-    for file in os.listdir(COGS):
+    for file in tqdm(os.listdir(COGS), desc='Loading cogs', colour='green'):
         #It looks for every file in the cogs folder
         #then checks if it ends with py, if it does loads it
         #if the file starts with # or is the core module it's no implemented.
@@ -69,7 +73,6 @@ if __name__ == '__main__': #Makes it can't be run through imports.
                 continue
             else:
                 client.load_extension(f'cogs.{file[:-3]}')
-                print(f'Loading {file[:-3]} extension...')
                 sleep(0.25)
 
     os.system('cls||clear')
