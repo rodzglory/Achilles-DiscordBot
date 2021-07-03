@@ -20,6 +20,11 @@ For scheduled tasks we are using [apscheduler](https://apscheduler.readthedocs.i
 pip install apscheduler
 ```
 
+To use any audio functions we need [PyNaCl](https://pypi.org/project/PyNaCl/) :
+```cmd
+pip install pynacl
+```
+
 Just for looks we are using [tqdm](https://pypi.org/project/tqdm/) and [termcolor](https://pypi.org/project/termcolor/):
 ```cmd
 pip install tqdm
