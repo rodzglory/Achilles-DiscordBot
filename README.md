@@ -25,6 +25,8 @@ To use any audio functions we need [PyNaCl](https://pypi.org/project/PyNaCl/) :
 pip install pynacl
 ```
 
+And [ffmpeg](http://ffmpeg.org/) to transform the audio to something that Discord can play
+
 Just for looks we are using [tqdm](https://pypi.org/project/tqdm/) and [termcolor](https://pypi.org/project/termcolor/):
 ```cmd
 pip install tqdm
