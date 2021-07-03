@@ -20,6 +20,12 @@ For scheduled tasks we are using [apscheduler](https://apscheduler.readthedocs.i
 pip install apscheduler
 ```
 
+Just for looks we are using [tqdm](https://pypi.org/project/tqdm/) and [termcolor](https://pypi.org/project/termcolor/):
+```cmd
+pip install tqdm
+pip install termcolor
+```
+
 ---
 ## <b>How to use</b>
 The bot <b>functions by just running the <i>main.py</i> file</b>, but first you have to setup two infos in the <i>botinfo.txt</i> under the infos folder.
