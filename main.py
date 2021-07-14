@@ -11,7 +11,7 @@ from termcolor import cprint
 
 #Constants
 BOT = 'Achilles'
-VERSION = '0.1.3'
+VERSION = '0.1.5'
 #Paths
 BOTDIR = os.path.dirname(__file__)
 INFO = os.path.join(BOTDIR, 'infos') 
