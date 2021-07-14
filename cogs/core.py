@@ -6,6 +6,7 @@ import json
 from discord.embeds import Embed
 from discord.ext import commands
 from main import status, INFO, client, scheduler, USERS
+from bank.bank import Customer
 
 class Core(commands.Cog):
 
@@ -28,18 +29,22 @@ class Core(commands.Cog):
             #then looks at the first info on the line that is the id
             #if the unique id has a match it means the user is already stored.
             if line.split(',')[0] == str(id):
-                return mention, locale
+                customer = Customer(id, name).add_credit(1)
+                del customer
+                return mention, locale, id
         else:
             open(USERS, 'a').write(f'{data}\n') #If the id is new we save it.
+            customer = Customer(id, name).add_credit(1)
+            del customer
             status('New user registered')
-            return mention, locale
+            return mention, locale, id
 
     @staticmethod
     async def embed(*, 
-    title: str = None, description: str = None, 
+    title: str = None, description: str = Embed.Empty, 
     imageurl: str = None, footer: str = None, 
     fields: list = None, thumbnail: str = None,
-    color: Any = None
+    color: Any = Embed.Empty
     ) -> Embed:
         """Helps at the creation of an Discord Embed object."""
         embed = discord.Embed(title=title, description=description, colour=color)
